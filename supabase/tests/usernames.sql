@@ -1,0 +1,81 @@
+begin;
+set local statement_timeout='30s';
+create function pg_temp.social_assert(ok boolean,why text) returns void language plpgsql as $$
+begin if ok is distinct from true then raise exception 'FAIL: %',why; end if; end $$;
+create temporary table social_ids(label text primary key,id uuid);
+grant select,insert on social_ids to authenticated;
+insert into social_ids values('author_auth',gen_random_uuid()),('peer_auth',gen_random_uuid()),('outsider_auth',gen_random_uuid());
+update private.app_admission_settings set enabled=false where singleton;
+insert into auth.users(id,email,email_confirmed_at,raw_user_meta_data)
+  select id,'username-fixture-'||id||'@example.test',clock_timestamp(),'{"display_name":"Username fixture"}' from social_ids;
+insert into social_ids select replace(i.label,'_auth','_profile'),l.profile_id from social_ids i join private.profile_auth_links l on l.auth_user_id=i.id;
+select pg_temp.social_assert(not has_function_privilege('anon','public.choose_username(text)','EXECUTE'),'anonymous claim denied');
+select pg_temp.social_assert(not has_table_privilege('authenticated','private.profile_usernames','SELECT'),'username table private');
+select set_config('request.jwt.claim.role','authenticated',true);
+select set_config('request.jwt.claim.sub',(select id::text from social_ids where label='author_auth'),true);
+set local role authenticated;
+select public.choose_username('AlphaAuthor');
+select public.choose_username('AlphaAuthor');
+select pg_temp.social_assert(public.my_username()='AlphaAuthor','original case preserved');
+do $$ begin
+  begin perform public.choose_username('DifferentName'); raise exception 'FAIL rename accepted'; exception when check_violation then null; end;
+  begin perform public.choose_username('ab'); raise exception 'FAIL short accepted'; exception when check_violation then null; end;
+end $$;
+insert into social_ids values('group',public.create_group('Mention SQL fixture'));
+reset role;
+select set_config('request.jwt.claim.sub',(select id::text from social_ids where label='peer_auth'),true);
+set local role authenticated;
+do $$ begin
+  begin perform public.choose_username('alphaauthor'); raise exception 'FAIL duplicate accepted'; exception when unique_violation then null; end;
+end $$;
+select public.choose_username('AlphaPeer');
+reset role;
+insert into public.group_memberships(group_id,user_id,role,state) values((select id from social_ids where label='group'),(select id from social_ids where label='peer_profile'),'member','active');
+insert into public.membership_periods(group_id,user_id) values((select id from social_ids where label='group'),(select id from social_ids where label='peer_profile'));
+select set_config('request.jwt.claim.sub',(select id::text from social_ids where label='outsider_auth'),true);
+set local role authenticated;
+select public.choose_username('AlphaOutsider');
+do $$ begin
+  begin perform public.table_mention_members((select id from social_ids where label='group')); raise exception 'FAIL outsider directory'; exception when insufficient_privilege then null; end;
+end $$;
+select pg_temp.social_assert((select count(*)=0 from public.resolve_mentions(array[(select id from social_ids where label='peer_profile')])),'unrelated lookup denied');
+reset role;
+select set_config('request.jwt.claim.sub',(select id::text from social_ids where label='author_auth'),true);
+set local role authenticated;
+select pg_temp.social_assert((select count(*)=2 from public.table_mention_members((select id from social_ids where label='group'))),'member suggestions scoped');
+insert into social_ids values('message_request',gen_random_uuid());
+insert into social_ids values('message',public.post_message((select id from social_ids where label='group'),(select id from social_ids where label='message_request'),'Hello @alphapeer and @ALPHAPEER', '[]','{}'));
+select pg_temp.social_assert(public.post_message((select id from social_ids where label='group'),(select id from social_ids where label='message_request'),'Hello @alphapeer and @ALPHAPEER','[]','{}')=(select id from social_ids where label='message'),'post retry stable');
+insert into social_ids values('request',public.post_table_request((select id from social_ids where label='group'),gen_random_uuid(),'Reply fixture question'));
+reset role;
+insert into social_ids select 'thread',id from public.threads where root_entry_id=(select id from social_ids where label='request');
+set local role authenticated;
+insert into social_ids values('reply_request',gen_random_uuid());
+insert into social_ids values('reply',public.reply_to_thread((select id from social_ids where label='thread'),(select id from social_ids where label='reply_request'),'Hi @AlphaPeer','[]','{}'));
+select pg_temp.social_assert(public.reply_to_thread((select id from social_ids where label='thread'),(select id from social_ids where label='reply_request'),'Hi @AlphaPeer','[]','{}')=(select id from social_ids where label='reply'),'reply retry stable');
+do $$ begin
+  begin perform public.post_message((select id from social_ids where label='group'),gen_random_uuid(),'Hello @['||(select id from social_ids where label='outsider_profile')||']','[]','{}'); raise exception 'FAIL outside mention'; exception when check_violation then null; end;
+end $$;
+reset role;
+select pg_temp.social_assert((select count(*)=1 from private.mention_notifications where entry_id=(select id from social_ids where label='message')),'duplicate mention and retry create one notification');
+select pg_temp.social_assert((select body like ('%@['||(select id from social_ids where label='peer_profile')||']%') and body not ilike '%alphapeer%' from public.timeline_entries where id=(select id from social_ids where label='message')),'body stores account identity, not username');
+select set_config('request.jwt.claim.sub',(select id::text from social_ids where label='peer_auth'),true);
+set local role authenticated;
+select pg_temp.social_assert((select count(*)=2 from public.my_mention_notifications()),'recipient receives message and reply notifications');
+select public.read_mention_notification((select id from public.my_mention_notifications() limit 1));
+select pg_temp.social_assert((select read_at is not null from public.my_mention_notifications() limit 1),'read state recorded');
+reset role;
+update public.membership_periods set ended_at=greatest(clock_timestamp(),joined_at+interval '1 microsecond'),end_reason='left'
+  where group_id=(select id from social_ids where label='group') and user_id=(select id from social_ids where label='peer_profile') and ended_at is null;
+update public.group_memberships set state='left' where group_id=(select id from social_ids where label='group') and user_id=(select id from social_ids where label='peer_profile');
+set local role authenticated;
+select pg_temp.social_assert((select count(*)=0 from public.my_mention_notifications()),'departure hides notification and context');
+reset role;
+select set_config('request.jwt.claim.role','service_role',true);
+insert into social_ids select 'erasure_op',operation_id from public.reserve_account_erasure_record((select id from social_ids where label='peer_auth'));
+select public.begin_recorded_account_erasure((select id from social_ids where label='erasure_op'),jsonb_build_object('sequence',1,'previous',repeat('0',64),'keyVersion','v1','event','intent','operationId',(select id from social_ids where label='erasure_op'),'profileToken',repeat('a',64),'authToken',repeat('b',64),'mac',repeat('c',64)));
+select pg_temp.social_assert((select username is null from private.profile_usernames where profile_id=(select id from social_ids where label='peer_profile')),'erasure clears username');
+select pg_temp.social_assert((select recipient_id is null and not active from private.mention_notifications where entry_id=(select id from social_ids where label='message')),'erasure clears notification association');
+set constraints all immediate;
+select 'PASS usernames: case-preserving unique fixed claims, private/scoped lookup, account-linked mentions, outsider denial, retry deduplication, read state, departure privacy and recorded erasure integration' as result;
+rollback;

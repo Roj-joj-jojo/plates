@@ -1,0 +1,182 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+:root {
+  color-scheme: light;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button, input, textarea {
+  font: inherit;
+}
+
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--secondary);
+}
+
+
+/* Plates v3: oat ground, black header, tomato actions and aubergine links. Light only for the MVP. */
+/* One authoritative set of values: hex, used as-is. No HSL or OKLCH copies. */
+:root {
+  --background: #F0EDE6;
+  --foreground: #16110E;
+  --card: #FAF8F4;
+  --card-foreground: #16110E;
+  --popover: #FAF8F4;
+  --popover-foreground: #16110E;
+  --primary: #C8230A;
+  --primary-foreground: #FFFFFF;
+  --primary-hover: #A81E08;
+  --secondary: #E6D6EC;
+  --secondary-foreground: #16110E;
+  --muted: #E8E3D9;
+  --muted-foreground: #554840;
+  --accent: #E6D6EC;
+  --accent-foreground: #16110E;
+  --destructive: #9B1B0A;
+  --destructive-foreground: #FFFFFF;
+  --border: #E4CDC0;       /* hairline separators only */
+  --input: #554840;        /* borders of inputs and outlined controls */
+  --ring: #16110E;         /* keyboard focus on light surfaces */
+  --ring-on-dark: #FFFFFF; /* keyboard focus on dark surfaces (the ink header) */
+  --link: #35073F;
+  --success: #1B5E34;
+  --success-foreground: #FFFFFF;
+  --unread: #FFC62E;
+  --unread-foreground: #16110E;
+
+  --radius-chip: 2px;
+  --radius-control: 4px;
+  --radius-card: 6px;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-link: var(--link);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-unread: var(--unread);
+  --color-unread-foreground: var(--unread-foreground);
+
+  /* Radii. Stock shadcn components use sm/md/lg/xl, so all resolve to the Plates scale. */
+  --radius-xs: var(--radius-chip);
+  --radius-sm: var(--radius-chip);
+  --radius-md: var(--radius-control);
+  --radius-lg: var(--radius-card);
+  --radius-xl: var(--radius-card);
+  --radius-2xl: var(--radius-card);
+
+  /* Fonts. next/font sets --font-manrope and --font-bricolage on <html>. */
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
+  --font-display: var(--font-bricolage), system-ui, sans-serif;
+
+  /* Type. text-xs is raised to 13px so stock components cannot go below the minimum. */
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.125rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5rem;
+
+  --text-table-title: 1.5rem;
+  --text-table-title--line-height: 1.875rem;
+  --text-table-title--font-weight: 700;
+  --text-plate-title: 1.125rem;
+  --text-plate-title--line-height: 1.5rem;
+  --text-plate-title--font-weight: 700;
+  --text-meta: 0.8125rem;
+  --text-meta--line-height: 1.125rem;
+  --text-label: 0.8125rem;
+  --text-label--line-height: 1.125rem;
+  --text-label--letter-spacing: 0.06em;
+  --text-label--font-weight: 700;
+
+  --container-thread: 45rem;  /* 720px reading column: max-w-thread */
+  --breakpoint-thread: 48rem; /* 768px: nav rail appears */
+  --breakpoint-wide: 75rem;   /* 1200px: Members and Photos side panel appears */
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.5rem;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /*
+   * ONE focus treatment: a 3px outline with a 2px gap. It overrides shadcn's own
+   * `outline-none` and `focus-visible:ring-*` classes (the ring is zeroed here),
+   * so the two never stack. Do not add ring classes to Plates components.
+   */
+  :focus-visible {
+    outline: 3px solid var(--ring) !important;
+    outline-offset: 2px !important;
+    --tw-ring-shadow: 0 0 #0000 !important;
+    --tw-ring-offset-shadow: 0 0 #0000 !important;
+  }
+
+  /* Mark any dark surface with data-surface="dark" to use a white focus outline. */
+  [data-surface="dark"] :focus-visible,
+  [data-surface="dark"]:focus-visible {
+    outline-color: var(--ring-on-dark) !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Explicit mention navigation; no motion or focus change. */
+[data-mention-target="true"] { background-color: var(--secondary); }
+
+.table-design input, .table-design textarea { accent-color: var(--primary); }
+.table-design dialog:not([data-surface="dark"]) { color: var(--foreground); }
+.table-design a { overflow-wrap: anywhere; }
+
+@media (max-width: 767px) {
+  html[data-keyboard-open="true"] .table-tabs,
+  html[data-keyboard-open="true"] .table-tools { display: none; }
+}

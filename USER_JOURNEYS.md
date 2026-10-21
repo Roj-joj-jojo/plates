@@ -1,8 +1,10 @@
 # Plates — Core User Journeys
 
-Last updated: 2026-10-04
+Last updated: 2026-10-06
 
 ## Status
+
+Current clarification (2026-10-06, recording October 5 decisions): use exactly one Meal (what you ate), Recipe (how to make it) or Place (where to go) category, with optional tags. An author's later Recipe can be a second Plate preserving their original Meal; shortcut details remain open. Menu reminders freeze body/links/tags/category/author name and one per-save preview, even after a rename; a first-save revision race prompts refresh. Signed-in use only: active members see full earlier Table history, owner-only invitations explain that access, and former members retain reminders without resolved source context. Members may leave but the last owner must transfer first; unpublishing preserves existing replies and reminders. Erasure instead blanks affected originals and retained copies to stubs; the full operation must be ready before real-user invitations. D1–D9 in [DATA_MODEL.md](DATA_MODEL.md) supersede the open snapshot/category/access wording in dated history below. Realtime is deferred; local Supabase CLI/Docker setup is next.
 
 Current clarification (2026-10-04): Plate and Request wireframes have been reviewed. A formal Request goes to one Table, has its own thread, and can be saved by members; the saved entry opens the ongoing discussion with later answers under current membership rules. Feed Requests are deferred. Plate saves remain captured reminders: one per saver/Plate with multiple explicitly added source discussions, without snapshot refresh. Individual-message saving remains unresolved. The owner has chosen a mobile-friendly Next.js/Supabase stack and asked to start building without further wireframing prerequisites; see [STACK.md](STACK.md). Dated paragraphs below preserve earlier reasoning and are qualified by this update.
 

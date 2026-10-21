@@ -1,0 +1,22 @@
+node_modules/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+.env*
+!.env.example
+.vercel/
+.DS_Store
+npm-debug.log*
+
+# Reproducible local release packages and isolated Docker rehearsal workspaces.
+# Keep the release manifest, original migrations/candidates and tooling tracked.
+/supabase/releases/prepared-dinnerfolk-alpha-*/
+/supabase/releases/rehearsal-*/
+
+# Local fixture identities, approvals and generated execution records.
+/PHOTO_WORKER_E2E_PLAN.json
+/PHOTO_WORKER_E2E_RESULTS.ndjson
+/QA_BATCH_8_RESILIENCE_RUN.json
+/supabase/tests/account-erasure-scopes/

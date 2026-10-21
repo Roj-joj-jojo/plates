@@ -1,0 +1,173 @@
+{
+  "format": 1,
+  "release": "dinnerfolk-alpha-20261021",
+  "status": "prepared-not-sql-verified",
+  "target": "fresh-supabase-project-only",
+  "files": [
+    {
+      "version": "20261006000100",
+      "source": "supabase/migrations/20261006000100_identity_membership.sql",
+      "sha256": "15a3be69096c0946030d16fc4d68da25d2a1b87fae1b31757c5bb5d938776aee"
+    },
+    {
+      "version": "20261006000200",
+      "source": "supabase/migrations/20261006000200_plates_timeline.sql",
+      "sha256": "efe1b350da9d61560a1415625b615164d4ac5a381e2e46ed7fa48e7d328ad553"
+    },
+    {
+      "version": "20261007000100",
+      "source": "supabase/migrations/20261007000100_menu_reminders.sql",
+      "sha256": "ceabfffce4d092b30790fc525536a0bc21dab0a7a6ad08f754f4301a7e81cea8"
+    },
+    {
+      "version": "20261008000100",
+      "source": "supabase/migrations/20261008000100_my_profile.sql",
+      "sha256": "4d0b8076943d468be7c745dd83315e0f162b3086a010c2a4cdc8952114f2a727"
+    },
+    {
+      "version": "20261008000200",
+      "source": "supabase/migrations/20261008000200_table_requests.sql",
+      "sha256": "e2eed92fd8697e26d07763cd7b051cbc9c5444d74f71bd358cdd7e3f7e14c537"
+    },
+    {
+      "version": "20261008000300",
+      "source": "supabase/migrations/20261008000300_search.sql",
+      "sha256": "07b782fd5029796e57adaa16965de1d300221387453cf92f3830dcc230374ba3"
+    },
+    {
+      "version": "20261009000100",
+      "source": "supabase/migrations/20261009000100_plate_images.sql",
+      "sha256": "bc20d226bc35b32fed20d5bbee6b36a7c77c2cb88cc0c202ce0c1f57d95084db"
+    },
+    {
+      "version": "20261009000200",
+      "source": "supabase/migrations/20261009000200_photo_menu_save_gate.sql",
+      "sha256": "6c517e2b053218fd01159eb39323d3679e8aa1f9d2d232273e8375d0223f0e65"
+    },
+    {
+      "version": "20261009000300",
+      "source": "supabase/migrations/20261009000300_upload_rate_limits.sql",
+      "sha256": "78b02973e2694d336105861fc499985ec2682dd5dff9f061206a7d837a771b64"
+    },
+    {
+      "version": "20261009000400",
+      "source": "supabase/migrations/20261009000400_menu_photo_previews.sql",
+      "sha256": "d43dd8062af857dcd09be6dec67cd492ee3b7609f04e64ec20a0989bc7a03109"
+    },
+    {
+      "version": "20261009000500",
+      "source": "supabase/migrations/20261009000500_table_images.sql",
+      "sha256": "720c74c110da32fbbd49f7cba65b877522ba59cea3f530d3c24bcb54ae1eb567"
+    },
+    {
+      "version": "20261009000600",
+      "source": "supabase/migrations/20261009000600_erasure_preflight.sql",
+      "sha256": "cf619b7df65fff29c8439f754bf7afbc256fca60d038c5260b7f3d145a921905"
+    },
+    {
+      "version": "20261009000610",
+      "source": "supabase/migrations/20261009000610_profile_visibility.sql",
+      "sha256": "829a45d708be31b42ac8e02506b9f876ed8173b8f4d6e0fb0d683bf0ece1ce64"
+    },
+    {
+      "version": "20261010000100",
+      "source": "supabase/migrations/20261010000100_media_grants.sql",
+      "sha256": "e316626bebd58440052a6274fd21f8ce8b40f66474a90cdbfb02ea64c3bd0d04"
+    },
+    {
+      "version": "20261010000200",
+      "source": "supabase/migrations/20261010000200_account_erasure.sql",
+      "sha256": "6bd37a13b54650ccc3e8ec42255e5606c2879ff91fee184dc1599f859a31e3e5"
+    },
+    {
+      "version": "20261010000300",
+      "source": "supabase/migrations/20261010000300_account_erasure_media_guard_fix.sql",
+      "sha256": "0c85f26886dab88dffa57920e57f75abaa398a45f15e72ba99e869210805b33d"
+    },
+    {
+      "version": "20261010000400",
+      "source": "supabase/migrations/20261010000400_erasure_recheck_finished_upload.sql",
+      "sha256": "10e55907fbbb1b7ce7d6b69687d2854b47302a0ed4b3fda5422989ff088e57d8"
+    },
+    {
+      "version": "20261010000500",
+      "source": "supabase/migrations/20261010000500_recorded_account_erasure.sql",
+      "sha256": "294d5e69dd79809dd606c11e1561228695bd3ada886bd31bc3b686d0bfb971bd"
+    },
+    {
+      "version": "20261011000100",
+      "source": "supabase/migrations/20261011000100_signup_allowlist.sql",
+      "sha256": "a2f0b864ee6270a0dcd1f27741e0bf540bb05ae4e82b3bdcc4da03b482e9273e"
+    },
+    {
+      "version": "20261011000200",
+      "source": "supabase/migrations/20261011000200_admin_account_management.sql",
+      "sha256": "3c485c8f89090a4b71d6beb45cbc68bde225384c63363a0898e1612e21d6d509"
+    },
+    {
+      "version": "20261011000300",
+      "source": "supabase/migrations/20261011000300_usernames_mentions.sql",
+      "sha256": "744ccd0067305b92a6479b0c8a7e6eef455bd14c05283c569ad8b5f67177d12a"
+    },
+    {
+      "version": "20261011000400",
+      "source": "supabase/migrations/20261011000400_table_membership.sql",
+      "sha256": "36e5f61749f5f35f6766a5114a3490c3d6aba654682f26acd3dd346e8743fbf3"
+    },
+    {
+      "version": "20261011000500",
+      "source": "supabase/migrations/20261011000500_conversation_updates.sql",
+      "sha256": "5e0e2fddc05835a6a1526baf631d1c20ccc491a6ed40e1b65d858800d5fe12a3"
+    },
+    {
+      "version": "20261011000600",
+      "source": "supabase/migrations/20261011000600_content_controls.sql",
+      "sha256": "c2e6fdf5a543a3619e2cfb86446cb493cc63feaae3ee8790908b5a80f6027cee"
+    },
+    {
+      "version": "20261013000100",
+      "source": "supabase/migrations/20261013000100_pictures.sql",
+      "sha256": "8a3ea9aab1aa8deac6d449e1713ab7daa5744186d4547885e8d7f115c48b82b6"
+    },
+    {
+      "version": "20261013000200",
+      "source": "supabase/migrations/20261013000200_follow_privacy.sql",
+      "sha256": "8b964c6ddd505879c7c32ff912a8086c104220257608fd730d8ab1cbee4d4b83"
+    },
+    {
+      "version": "20261014000100",
+      "source": "supabase/candidates/20261014000100_photo_worker.sql",
+      "sha256": "1b201aee944b87ff1443e7e2923cc215bc51caac8aecae871876209dea2076c3"
+    },
+    {
+      "version": "20261015000100",
+      "source": "supabase/candidates/20261015000100_follow_notifications.sql",
+      "sha256": "3ec59be2d9430560561c32e6ec5798317fe7775cbc8932a4b358fe390ef2a857"
+    },
+    {
+      "version": "20261015000200",
+      "source": "supabase/candidates/20261015000200_menu_photo_gallery.sql",
+      "sha256": "ee4f7330256ad42a8b25159fbe3fe0b9984c4859baab707cad2fa821707f5799"
+    },
+    {
+      "version": "20261015000300",
+      "source": "supabase/candidates/20261015000300_menu_removal.sql",
+      "sha256": "4155b7531d84382b3d3564b45810eace013e34a23c0c35806a0acf1f0f91e4d2"
+    },
+    {
+      "version": "20261015000400",
+      "source": "supabase/candidates/20261015000400_plate_interactions.sql",
+      "sha256": "5e96e95d285c5008d3f3a561f98a4f4b19778ed0813cf0558d0186f88b59be50"
+    },
+    {
+      "version": "20261015000500",
+      "source": "supabase/candidates/20261015000500_introduction.sql",
+      "sha256": "c427f768904c6c5080b213e00665db5ffdc61be12451f9dac1f5f88b53a6dacd"
+    },
+    {
+      "version": "20261017000100",
+      "source": "supabase/candidates/20261017000100_activity_notifications.sql",
+      "sha256": "da780cfb932f89c02d0d22bb134ff54e5eff48c5ae84d25c2d75bfdf1da1084b"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+# QA follow-up implementation — 20 October 2026
+
+## Implemented locally
+
+- Added `APP_UX_BASELINE.md` as the ongoing owner-agreed copy and interaction baseline. Equivalent compose/edit/confirmation/onboarding paths now share the same terms; repeated labels/notices use `src/lib/ui-copy.ts`.
+- Add a Plate/Adding… creation wording, contextual message/reply/question/share-note editing and removal wording, consistent optional text/links labels, Manage your people, Deselect and photo terminology. Profile/Table photo selection has a labelled app button. Internal backend names remain unchanged.
+- Added safe HTTP(S)/www links to Table messages, replies, supporting context and share notes, preserving plain text, punctuation and canonical mentions. Original Plate text/mention behaviour remains unchanged for alpha.
+- Added Cmd/Ctrl+Enter to other multiline compose/edit forms while keeping plain Enter as a new line. Table chat retains Enter-to-send and its mention/composition handling. No shortcut changes to single-line auth forms.
+- Empty message/reply edits are blocked unless they retain text, links or existing photos. Blank optional question context/share notes remain valid. Existing photos are passed into the validation guard.
+- Added a last-Admin explanation; retained existing membership and close/leave guards.
+- Conversation dividers show Today for the current London day and a short date otherwise. Individual message times remain HH:mm; full accessible dates/timezones remain. Standalone detail/notification timestamps use a consistent short date/time without seconds. Initial server/client output matches; day labels refresh after hydration and on day change/resume.
+- Simplified the retained concept tour, corrected immediate Table addition/history and bell/envelope descriptions, explained Account under the avatar and question → saved Request. First-step Back is hidden, disabled and excluded from focus while preserving space.
+- Shorter consistent update/save/failure notices, optional/source-link wording, comment labels and removal placeholders. Snapshot/live-discussion/access/erasure distinctions remain intact. Ordering remains comments newest first and Table replies oldest first with labels.
+- Reproduced F5: the old centred status panel intercepted the enabled Post reply button centre. Moved desktop notices to the lower right and made panel text pointer-transparent, with Dismiss still interactive and status semantics retained.
+
+## Verification completed
+
+- `npm run lint`, `npm run typecheck` and `npm run build -- --webpack` passed on the final source including the toast fix.
+- Offline `scripts/test-followup-ux.mjs`, `scripts/test-conversation-ux.mjs` and `scripts/test-form-ux.mjs` passed. Coverage includes safe link parsing/text preservation, empty/text/link/photo validation combinations, London midnight/DST and deterministic initial date output, shortcut guards/composition/disabled forms and existing form/conversation checks. Timer/resume browser simulation and successful data edits were not performed.
+- Stable preview now running at `http://127.0.0.1:3000`, agent session 63908; previous preview 37237 stopped before the final build. Photo worker not operated.
+- IAB peer: rebuilt Table question/conversation/Manage Table navigation and Manage Table reload succeeded. Captured browser errors: zero; reported hydration 418/prefetch 503 not reproduced in this narrow check. This does not establish absence across all routes/transitions.
+- IAB introduction: inspected all five revised steps and Back navigation; no Skip/Finish/destination completion. First Back hidden/disabled/aria-hidden/tabIndex -1. No horizontal overflow on checked introduction/question views at 360/390px. Viewport override reset.
+- Owner explicitly approved two retained saves of the same existing QA question, one per account. First IAB peer save reproduced F5 (Post reply y615–663; panel y618–696; button centre hit the panel). Firefox was signed out; owner signed in personally, then the additional approved owner-account save succeeded. Final desktop screenshot shows the new lower-right banner. The Firefox screenshot did not capture Post reply and the banner together, so a final button-centre hit test/Dismiss/mobile live-toast check is not claimed. No reply posted; only agent-created unsent scratch text was cleared. Both saves remain in Menu; no cleanup authority.
+- Proof: `/private/tmp/plates-toast-fix-firefox.jpg`; saved question state: `/private/tmp/plates-followup-saved-question.jpg`. These are local review evidence, not release artifacts.
+
+## Diagnostics and release gates still open
+
+- F6 measured in Firefox Network Monitor on the foreground signed-in QA question, filtered to `account_updates`, with no route changes or posting during the sample. The final list showed 14 GET + 14 OPTIONS entries, all 200, and Finish 2.19 min (about 131 seconds between first/last matching requests). At the earlier observation there were 1 GET + 1 OPTIONS; about 127 wall-clock seconds later there were 14 of each. This is consistent with one account check per approximately 10 seconds, not the reported 450 requests/two minutes. OPTIONS are browser preflight checks, not additional application polls. No polling change made. This per-tab idle sample does not rule out a route-transition/reconnect/multiple-tab spike or measure all backend endpoints; reopen on a concrete reproduction. No request headers/tokens exported. Evidence: `/private/tmp/plates-idle-account-request-count.jpg`. Developer Tools and temporary Firefox tab closed; owner's Feed restored with original zoom.
+- F4 remains unconfirmed beyond the successful scoped management checks. Font preload-unused warnings observed in Firefox are not evidence of a 503 or hydration mismatch.
+- M10 delayed/stopped photo worker, upload timeout/retry and resulting visibility/count need separately scoped rehearsal; no guessed count change.
+- Live mutation/browser matrix for text/link/photo-only edits and successful shortcut submissions remains outside these checks. Further accessibility audit is deferred post-alpha by owner decision.
+- Batch 8 direct access/privacy/failure/fresh signup, older-message context beyond 50, follow-acceptance alerts and remaining edge cases still need the integrated rehearsal before hosting preparation. No alpha/release acceptance claimed.
+- No Git commands, DB commands, dependency changes, deletion, remote project upload, deployment or publishing. Owner retains review/commit/merge/release control. No Git commands are necessary to review the running local preview; any later Git operation must be run by the owner.

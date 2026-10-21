@@ -1,0 +1,13 @@
+{
+  "$schema": "https://railway.com/railway.schema.json",
+  "build": {
+    "builder": "RAILPACK",
+    "buildCommand": "node --check scripts/photo-worker.mjs"
+  },
+  "deploy": {
+    "startCommand": "node scripts/photo-worker.mjs",
+    "restartPolicyType": "NEVER",
+    "overlapSeconds": "0",
+    "drainingSeconds": "120"
+  }
+}

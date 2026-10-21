@@ -1,6 +1,8 @@
 # Plates — Product Model v1
 
-Working model · updated 2026-10-04
+Working model · updated 2026-10-06
+
+2026-10-14 decision clarification: owner approved open accounts by default and optional private accounts with approved followers. Following selects the Feed; private-account Plate viewing is also permission-gated across Search, direct links, Table previews and photos. Existing followers remain approved on making an account private; opening approves pending requests after confirmation. Existing Menu copies remain, while Table membership stays separate. This supersedes the older no-private-profile/follower-gate wording below. Local activation and candidate/installed rollback checks passed, alongside code checks; owner preview rebuild/browser review is pending. See SOCIAL_ALPHA_PLAN.md for the current scope and limits.
 
 This consolidates confirmed behaviour; it is not a declaration that the complete MVP is approved or implemented. Scope proposals live in [MVP_SCOPE.md](MVP_SCOPE.md), and proposed storage relationships in [DATA_MODEL.md](DATA_MODEL.md). The six journeys and their history remain in [USER_JOURNEYS.md](USER_JOURNEYS.md).
 
@@ -19,8 +21,9 @@ Plates helps friends share food experiences, discuss them, and recover useful id
 
 ## Confirmed behaviour
 
-- No private author profiles in the initial version. Following is not required to open a shared Plate; an unfamiliar author can have a Follow action. Tables and their discussions remain private to members. This does not decide logged-out web access.
-- A Plate may contain text, links, images, or a combination. Publishing requires a broad category such as Meal, Recipe, or Restaurant. The exact list and whether more than one category is allowed remain open.
+- Connected use is signed-in only, with no logged-out browsing. No private author profiles or follower gate: following is not required to open a shared Plate. Tables and discussions remain private to active members, who see full earlier history.
+- A Plate may contain text, links, images, or a combination. Publishing requires exactly one category: Meal means what you ate; Recipe means how to make it; Place means where to go. Optional tags carry overlap.
+- The requested Meal-to-Recipe direction creates a second Plate, preserving the original Meal, discussions and saves. Each post has its own content/category. A dedicated shortcut and cross-link presentation remain to be designed.
 - A Plate can be shared into several Tables through separate actions. Each action has one destination and creates a new share and thread, including repeated shares to the same Table.
 - A share preserves the distinction between the original author and the person bringing it to the Table. Its thread entry says `Reply in thread`, then shows a reply count when replies exist.
 - Shared Plates and formal Requests each have dedicated threads. Saving a Request retains access to its ongoing discussion; arbitrary message threads, nested threads and saving individual replies remain outside the agreed baseline.
@@ -34,13 +37,15 @@ Plates helps friends share food experiences, discuss them, and recover useful id
 
 | Event | Menu item | Opening original/source |
 | --- | --- | --- |
-| Plate saved | Captures the Plate as encountered; exact captured fields remain to be agreed. | Links to live Plate and the specific Table share when saved there. |
+| Plate saved | Captures body, links, tags, category, author name, revision/time and one per-save preview where present. | Links to live Plate and the specific Table share when saved there; a stale first-save revision asks for a refresh. |
 | Author edits Plate | Captured representation remains. | Live Plate shows its latest state; existing shares show `Edited since shared` when applicable. Historical-version browsing is deferred. |
-| Original Plate ordinarily removed | Captured reminder remains, including retained preview media where provided. | Cannot reopen the removed Plate. Treatment of its remaining Table discussion still needs definition. |
+| Author renamed | Saved author name remains frozen at save time. | Current profile uses the new name. |
+| Original Plate ordinarily removed | Captured reminder and retained preview remain. | Shares show “no longer available”; existing replies remain visible to active members. |
+| Author content erased | Affected reminders become blank removed stubs, including saved names and images. | Affected originals are blank; independent replies are not automatically erased. |
 
-A saved item does not publish private conversation or grant access to another Table. Source navigation must respect current membership. Leaving a Table and other access changes need their own behaviour definition; the ordinary Plate-removal decision does not settle them.
+A saved item does not publish private conversation or grant access to another Table. Former members retain Plate reminders but lose resolved source labels and context, including Table names, sharer details and replies. Joining is invite-only, initially with owner-only invitations. The invite UI says “New members can see earlier conversation.” Leaving preserves past messages as “former member” within that Table; the last owner must transfer ownership before leaving. Savers may unsave or remove one source. The first release permits Table archiving rather than deletion; precise archive semantics remain to be specified.
 
-Broader removal of saved copies is reserved for account deletion and intervention cases, rather than a normal author-facing `Delete everywhere` action in MVP. Snapshots and retained media must be removable through that path; exact account-deletion, complaint review, erasure and backup handling still need definition. A saved Request is a live discussion reference, not a frozen copy of answers.
+Broader removal of saved copies is reserved for account deletion and intervention cases, rather than a normal author-facing `Delete everywhere` action in MVP. Adopt “erased means blank” as the default, overriding frozen reminders and attribution. Full operation design, complaint handling, physical assets, backups/caches and appropriate advice remain prerequisites before real-user invitations. This policy does not enable deletion endpoints. A saved Request is a live discussion reference, not a frozen copy of answers.
 
 Blocking/reporting must be considered in the architecture, but their user-facing workflows are deferred for the initial friends-only release. Exact blocking behaviour in shared Tables is not yet agreed.
 
@@ -52,9 +57,10 @@ Individual-message saving remains unresolved following the owner's September 29 
 
 ## Choices to settle through the next designs
 
-1. What a saved reminder contains: proposed fields and media handling are in the data-model draft.
-2. Finalise publishing controls around the working Meal, Recipe and Place choices, with Request as a separate contribution type. One category plus optional multiple tags is the proposed initial implementation; category multiplicity has not had a separate explicit confirmation.
-3. Supporting flows: joining Tables, feed selection, and access to prior Table history.
-4. Promotion scope, removal lifecycle, and the separate question of individual-message saving.
+1. Publishing controls and the shortcut for an author to create a second Plate in another category; the category rule itself is settled.
+2. Supporting interfaces for owner invitations, passwordless email signup and feed selection. History access is settled.
+3. Detailed archive/removal operations, promotion scope and the separate question of individual-message saving.
+
+The October 5 D1–D9 feedback was recorded on October 6. [DATA_MODEL.md](DATA_MODEL.md) holds the canonical limits and decision register, including initial media defaults, signup validation and the pre-invitation erasure gate. Realtime waits until M7; refetch on focus/pull-to-refresh comes first.
 
 Further friend responses and remaining wireframes do not block implementation. The owner chose the stack and asked to begin a working prototype; see [STACK.md](STACK.md).

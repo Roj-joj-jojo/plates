@@ -1,0 +1,12 @@
+import assert from "node:assert/strict";
+import { activityVisible } from "../src/lib/activity-visibility.ts";
+const shown = { visible: true, intersecting: true, height: 200, visibleHeight: 120 };
+assert.equal(activityVisible(shown), true);
+assert.equal(activityVisible({ ...shown, visible: false }), false);
+assert.equal(activityVisible({ ...shown, intersecting: false }), false);
+assert.equal(activityVisible({ ...shown, visibleHeight: 1 }), false);
+assert.equal(activityVisible({ ...shown, height: 0 }), false);
+assert.equal(activityVisible({ ...shown, height: 40, visibleHeight: 20 }), true);
+assert.equal(activityVisible({ ...shown, height: 10000, visibleHeight: 200 }), true);
+assert.equal(activityVisible({ ...shown, height: 10000, visibleHeight: 50 }), false);
+console.log("Activity visibility checks passed.");

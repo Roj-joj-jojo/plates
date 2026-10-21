@@ -1,0 +1,63 @@
+begin;
+set local statement_timeout='30s';
+create function pg_temp.social_assert(ok boolean,why text) returns void language plpgsql as $$
+begin if ok is distinct from true then raise exception 'FAIL: %',why; end if; end $$;
+create temporary table social_ids(label text primary key,id uuid);
+grant select,insert on social_ids to authenticated;
+insert into social_ids values('owner_auth',gen_random_uuid()),('peer_auth',gen_random_uuid()),('outsider_auth',gen_random_uuid());
+update private.app_admission_settings set enabled=false where singleton;
+insert into auth.users(id,email,email_confirmed_at,raw_user_meta_data)
+  select id,'table-fixture-'||id||'@example.test',clock_timestamp(),'{"display_name":"Table management fixture"}' from social_ids;
+insert into social_ids select replace(i.label,'_auth','_profile'),l.profile_id from social_ids i join private.profile_auth_links l on l.auth_user_id=i.id;
+insert into private.profile_usernames(profile_id,username) select id,'Fixture'||replace(id::text,'-','')::varchar(20) from social_ids where label like '%_profile';
+select pg_temp.social_assert(not has_function_privilege('anon','public.table_members(uuid)','EXECUTE'),'anonymous member list denied');
+select set_config('request.jwt.claim.role','authenticated',true);
+select set_config('request.jwt.claim.sub',(select id::text from social_ids where label='owner_auth'),true);
+set local role authenticated;
+insert into social_ids values('group',public.create_table_with_members('Direct-add SQL fixture',array[(select id from social_ids where label='peer_profile')]));
+select pg_temp.social_assert((select count(*)=2 from public.table_members((select id from social_ids where label='group'))),'selected peer added immediately');
+select public.add_table_members((select id from social_ids where label='group'),array[(select id from social_ids where label='peer_profile')]);
+do $$ begin
+  begin perform public.set_table_admin((select id from social_ids where label='group'),(select id from social_ids where label='owner_profile'),false); raise exception 'FAIL last Admin demoted'; exception when check_violation then null; end;
+  begin perform public.leave_table((select id from social_ids where label='group')); raise exception 'FAIL last Admin left'; exception when check_violation then null; end;
+end $$;
+reset role;
+select pg_temp.social_assert((select count(*)=1 from public.membership_periods where group_id=(select id from social_ids where label='group') and user_id=(select id from social_ids where label='peer_profile')),'add retry preserves one period');
+select set_config('request.jwt.claim.sub',(select id::text from social_ids where label='outsider_auth'),true);
+set local role authenticated;
+do $$ begin
+  begin perform public.table_members((select id from social_ids where label='group')); raise exception 'FAIL outsider list'; exception when insufficient_privilege then null; end;
+  begin perform public.add_table_members((select id from social_ids where label='group'),array[(select id from social_ids where label='outsider_profile')]); raise exception 'FAIL outsider add'; exception when insufficient_privilege then null; end;
+end $$;
+reset role;
+select set_config('request.jwt.claim.sub',(select id::text from social_ids where label='peer_auth'),true);
+set local role authenticated;
+do $$ begin
+  begin perform public.set_table_admin((select id from social_ids where label='group'),(select id from social_ids where label='peer_profile'),true); raise exception 'FAIL member appointed Admin'; exception when insufficient_privilege then null; end;
+  begin perform public.leave_table((select id from social_ids where label='group'),null,true); raise exception 'FAIL member closed'; exception when insufficient_privilege then null; end;
+end $$;
+select public.leave_table((select id from social_ids where label='group'));
+select pg_temp.social_assert((select count(*)=0 from public.groups where id=(select id from social_ids where label='group')),'leaver loses access');
+reset role;
+select set_config('request.jwt.claim.sub',(select id::text from social_ids where label='owner_auth'),true);
+set local role authenticated;
+select public.add_table_members((select id from social_ids where label='group'),array[(select id from social_ids where label='peer_profile')]);
+select public.set_table_admin((select id from social_ids where label='group'),(select id from social_ids where label='peer_profile'),true);
+select public.set_table_admin((select id from social_ids where label='group'),(select id from social_ids where label='peer_profile'),false);
+select public.remove_table_member((select id from social_ids where label='group'),(select id from social_ids where label='peer_profile'));
+select public.remove_table_member((select id from social_ids where label='group'),(select id from social_ids where label='peer_profile'));
+select public.add_table_members((select id from social_ids where label='group'),array[(select id from social_ids where label='peer_profile')]);
+select public.leave_table((select id from social_ids where label='group'),(select id from social_ids where label='peer_profile'));
+reset role;
+select pg_temp.social_assert((select role='owner' and state='active' from public.group_memberships where group_id=(select id from social_ids where label='group') and user_id=(select id from social_ids where label='peer_profile')),'replacement appointed atomically');
+select pg_temp.social_assert((select count(*)=3 from public.membership_periods where group_id=(select id from social_ids where label='group') and user_id=(select id from social_ids where label='peer_profile')),'rejoin creates periods without overlap');
+select set_config('request.jwt.claim.sub',(select id::text from social_ids where label='peer_auth'),true);
+set local role authenticated;
+select public.leave_table((select id from social_ids where label='group'),null,true);
+reset role;
+select pg_temp.social_assert((select availability='removed' and name='Direct-add SQL fixture' from public.groups where id=(select id from social_ids where label='group')),'closure preserves Table record');
+select pg_temp.social_assert(not exists(select 1 from public.group_memberships where group_id=(select id from social_ids where label='group') and state='active'),'closure ends all memberships');
+select pg_temp.social_assert(not exists(select 1 from public.membership_periods where group_id=(select id from social_ids where label='group') and ended_at is null),'closure closes all periods');
+set constraints all immediate;
+select 'PASS tables: immediate selected membership, private member lists, Admin permissions, add/remove retries, leave/rejoin periods, last-Admin protection, atomic replacement and retained closed Table' as result;
+rollback;
