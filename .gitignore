@@ -14,6 +14,7 @@ npm-debug.log*
 # Keep the release manifest, original migrations/candidates and tooling tracked.
 /supabase/releases/prepared-dinnerfolk-alpha-*/
 /supabase/releases/rehearsal-*/
+/supabase/releases/hosted-alpha-*/
 
 # Local fixture identities, approvals and generated execution records.
 /PHOTO_WORKER_E2E_PLAN.json
