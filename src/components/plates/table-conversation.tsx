@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Search, Users, ImageIcon, MessageCircle, ChevronDown } from "lucide-react";
 import { Navigation } from "@/components/navigation";
+import { BrandWordmark } from "@/components/brand-wordmark";
 import { PageHeader } from "@/components/page-layout";
 import { PictureAvatar } from "@/components/picture-avatar";
 import { Button } from "@/components/ui/button";
@@ -32,7 +33,7 @@ export function TableConversation(p:Props) {
   React.useEffect(() => { if (!p.targetId) scrollToBottomNow(); }, [p.targetId,scrollToBottomNow]);
   const rows=React.Children.toArray(p.children);
   return <div id={scrollerId} className="table-design fixed inset-x-0 top-[var(--vv-top,0px)] flex h-[var(--vvh,100dvh)] overflow-hidden bg-background">
-    <aside className="hidden w-[200px] shrink-0 flex-col border-r px-4 py-6 thread:flex"><Link href="/feed" aria-label="Plates home" className="mb-8 px-3 font-display text-2xl font-bold">Plates<span className="text-primary">.</span></Link><Navigation vertical/><p className="mt-auto px-3 pt-8 text-meta text-muted-foreground">Food is worth sharing.</p></aside>
+    <aside className="hidden w-[200px] shrink-0 flex-col border-r px-4 py-6 thread:flex"><Link href="/feed" aria-label="Dinnerfolk home" className="mb-8 flex min-h-11 items-center px-3"><BrandWordmark className="w-36" /></Link><Navigation vertical/><p className="mt-auto px-3 pt-8 text-meta text-muted-foreground">Food is worth sharing.</p></aside>
     <div className="flex min-w-0 flex-1 flex-col">
       <div className="shrink-0"><PageHeader title={p.name} description={`${conversationCount(p.memberCount, "member")} · ${conversationCount(p.photoCount, "photo")}`} readMarker={p.membershipRead}
         leading={<><Link href="/tables" aria-label="All Tables" className="grid size-11 shrink-0 place-items-center rounded-md hover:bg-card/10"><ArrowLeft className="size-4" aria-hidden/></Link><PictureAvatar name={p.name} url={p.pictureUrl} table className="hidden size-12 shrink-0 sm:flex" /></>} /></div>

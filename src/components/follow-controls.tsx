@@ -85,7 +85,7 @@ export function PrivacySettings({ isPrivate, version, bio }: { isPrivate: boolea
   const announce = useActionNotice();
   return <><ProfileBio bio={bio} version={version} /><section className="mt-6 rounded-lg border bg-card p-6">
     <h2 className="font-display text-lg font-bold">Account privacy</h2>
-    <p className="mt-2 text-sm text-muted-foreground">{isPrivate ? "Private: only approved followers can see your Plates." : "Open: people signed in to Plates can discover your Plates and follow you."} Tables always have their own private membership.</p>
+    <p className="mt-2 text-sm text-muted-foreground">{isPrivate ? "Private: only approved followers can see your Plates." : "Open: people signed in to Dinnerfolk can discover your Plates and follow you."} Tables always have their own private membership.</p>
     <Button className="mt-4" variant="outline" disabled={action.busy} onClick={() => setConfirm(true)}>Make account {isPrivate ? "open" : "private"}</Button>
     {action.error && <p role="alert" className="mt-3 text-sm text-destructive">{action.error}</p>}
     <AlertDialog open={confirm} onOpenChange={open => { if (!action.busy) setConfirm(open); }}><AlertDialogContent>

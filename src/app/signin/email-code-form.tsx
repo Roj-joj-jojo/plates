@@ -5,6 +5,7 @@ import { useRef, useState, type FormEvent } from "react";
 import { createClient } from "@/lib/supabase/browser";
 import { authErrorMessage, displayNameProblem, type AuthMode } from "@/lib/account-ux";
 import { Button } from "@/components/ui/button";
+import { BrandWordmark } from "@/components/brand-wordmark";
 
 export function EmailCodeForm({ restricted }: { restricted: boolean }) {
   const router = useRouter();
@@ -84,10 +85,10 @@ export function EmailCodeForm({ restricted }: { restricted: boolean }) {
   }
 
   return (
-    <><p className="font-display text-2xl font-bold">Plates<span className="text-primary">.</span></p>
-    <h1 className="mt-6 font-display text-3xl font-bold sm:text-4xl">{mode === "signup" ? "Join Plates" : "Welcome back"}</h1>
+    <><BrandWordmark className="w-[210px]" />
+    <h1 className="mt-6 font-display text-3xl font-bold sm:text-4xl">{mode === "signup" ? "Join Dinnerfolk" : "Welcome back"}</h1>
     <p className="mt-3 text-base leading-7 text-muted-foreground">{restricted
-      ? "Plates is open to invited email addresses. Create an account with an approved address, or sign in to your existing account."
+      ? "Dinnerfolk is open to invited email addresses. Create an account with an approved address, or sign in to your existing account."
       : "Create an account or sign in with an email code."}</p>
     <section className="mt-6 rounded-xl border border-border bg-card p-6 sm:p-8" aria-label={mode === "signup" ? "Create account" : "Sign in"}>
       <div className="flex flex-wrap gap-1 rounded-lg bg-secondary p-1" role="group" aria-label="Account action">
