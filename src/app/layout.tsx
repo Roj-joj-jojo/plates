@@ -8,7 +8,8 @@ import { ActionNoticeProvider } from "@/components/form-feedback";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: { default: "Plates", template: "%s · Plates" },
+  title: { default: "Dinnerfolk", template: "%s · Dinnerfolk" },
+  applicationName: "Dinnerfolk",
   description: "Food is worth sharing with people you know.",
   robots: { index: false, follow: false },
 };

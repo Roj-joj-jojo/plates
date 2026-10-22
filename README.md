@@ -1,6 +1,8 @@
-# Plates
+# Dinnerfolk
 
 Mobile-friendly food sharing with private Tables and a personal Menu.
+
+Dinnerfolk is the app’s public name (previously Plates). Plates remain individual posts; Tables and Menu keep their existing meanings. Approved logo assets and usage notes are in [the branding notes](design/dinnerfolk-branding.md). The repository, package and local service identifiers retain their existing names.
 
 ## Current implementation
 

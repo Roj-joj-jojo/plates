@@ -38,12 +38,12 @@ export function Allowlist({ entries }: { entries: AllowlistEntry[] }) {
       <button type="submit" disabled={busy} className="mt-4 min-h-11 rounded-md bg-primary hover:bg-primary-hover px-5 py-3 text-sm font-semibold text-primary-foreground disabled:opacity-60">
         {busy ? "Saving…" : "Allow this email"}
       </button>
-      <p className="mt-3 text-sm text-muted-foreground">Share the Plates address with them afterwards. Adding an email here doesn’t send a message.</p>
+      <p className="mt-3 text-sm text-muted-foreground">Share the Dinnerfolk address with them afterwards. Adding an email here doesn’t send a message.</p>
     </form>
     {message && <p role="status" className="mt-4 text-sm text-success">{message}</p>}
     {error && <p role="alert" className="mt-4 text-sm text-destructive">{error}</p>}
     <section className="mt-8"><h2 className="font-display text-xl font-bold">Pending signup permissions</h2>
-      <p className="mt-2 text-sm leading-6 text-muted-foreground">An address leaves this list once its account is created. Withdrawing permission affects new signup only. It doesn’t remove an existing person from Plates or a Table.</p>
+      <p className="mt-2 text-sm leading-6 text-muted-foreground">An address leaves this list once its account is created. Withdrawing permission affects new signup only. It doesn’t remove an existing person from Dinnerfolk or a Table.</p>
       {entries.length ? <ul className="mt-4 space-y-3">{entries.map(entry => <li key={entry.id}
         className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card p-5">
         <div className="min-w-0"><p className="break-all font-semibold">{entry.email}</p>

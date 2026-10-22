@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Navigation } from "@/components/navigation";
+import { BrandWordmark } from "@/components/brand-wordmark";
 export function AppFrame({children}:{children:React.ReactNode}) {
   const pathname = usePathname();
   if (pathname === "/signin") return <main id="main" tabIndex={-1} className="min-h-dvh bg-background px-4 py-10 sm:py-16"><div className="mx-auto max-w-lg">{children}</div></main>;
@@ -10,7 +11,7 @@ export function AppFrame({children}:{children:React.ReactNode}) {
   if(table) return <main id="main" tabIndex={-1}>{children}</main>;
   return <div className="min-h-dvh bg-background">
     <aside className="fixed inset-y-0 left-0 hidden w-[200px] flex-col overflow-y-auto border-r px-4 py-6 thread:flex">
-      <Link href="/feed" aria-label="Plates home" className="mb-8 px-3 font-display text-2xl font-bold">Plates<span className="text-primary">.</span></Link>
+      <Link href="/feed" aria-label="Dinnerfolk home" className="mb-8 flex min-h-11 items-center px-3"><BrandWordmark className="w-36" /></Link>
       <Navigation vertical />
       <p className="mt-auto px-3 pt-8 text-meta text-muted-foreground">Food is worth sharing.</p>
     </aside>

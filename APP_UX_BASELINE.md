@@ -1,6 +1,10 @@
-# Plates interface and copy baseline
+# Dinnerfolk interface and copy baseline
 
 Agreed with the owner; updated 20 October 2026. Apply each convention across equivalent screens when adding/changing UI. Search for and update equivalent old wording as part of the change. Preserve meaningful distinctions, access rules and saved-copy behaviour. The baseline is not permission for Git, data cleanup, new features or unrelated refactors.
+
+## App identity — 22 October 2026
+
+Dinnerfolk is the app name. Plates remain posts; Tables, Menu and Requests retain their existing meanings. Use approved wordmark A and icon C from [the branding notes](design/dinnerfolk-branding.md), with the shared BrandWordmark component for app logos. Browser titles, onboarding, sign-in, account-access copy and local email templates use Dinnerfolk. Historical/internal Plates identifiers are retained. Hosted email settings require a separate owner-controlled update.
 
 ## Names and actions
 

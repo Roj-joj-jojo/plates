@@ -18,7 +18,7 @@ export default async function AppAccessPage() {
   if (error) throw new Error("Allowlist unavailable");
   const live = await client.rpc("admin_live_accounts");
   if (live.error && !["PGRST202", "42883"].includes(live.error.code)) throw new Error("Account management unavailable");
-  return <PageLayout title="Manage app access" description="Add people to Plates. They’ll need a separate invitation to join a private Table." backLink={<BackLink href="/account">Your account</BackLink>}>
+  return <PageLayout title="Manage app access" description="Add people to Dinnerfolk. They’ll need a separate invitation to join a private Table." backLink={<BackLink href="/account">Your account</BackLink>}>
     {!status.enabled && <p role="status" className="mt-4 text-sm">Signup restrictions haven’t been activated yet.</p>}
     <Allowlist entries={(data ?? []) as AllowlistEntry[]} />
     <LiveAccounts accounts={(live.data ?? []) as LiveAccount[]} ready={!live.error} deletionEnabled={process.env.APP_ADMIN_ACCOUNT_ERASURE_ENABLED === "true"} />

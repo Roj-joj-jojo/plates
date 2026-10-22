@@ -63,7 +63,7 @@ export default async function AccountPage() {
       {!username.error && <UsernameForm username={username.data} />}
       {profile.data && <DisplayNameSettings displayName={profile.data.display_name ?? ""} />}
       {introduction.ready && <section className="mt-6 rounded-lg border bg-card p-6">
-        <h2 className="font-display text-xl font-bold">A quick tour of Plates</h2>
+        <h2 className="font-display text-xl font-bold">A quick tour of Dinnerfolk</h2>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">Find your way around Feed, Plates, Tables, Menu and People.</p>
         <Link href="/introduction" className="mt-3 inline-flex min-h-11 items-center font-semibold text-link underline">Replay introduction</Link>
       </section>}
