@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ViewNavigation } from "@/components/view-navigation";
+import { MenuViews } from "@/components/menu-views";
+import { YourPlates } from "@/components/your-plates";
 import { PlateContent } from "@/components/plate-content";
 import { PlateImages } from "@/components/plate-images";
 import { SearchForm } from "@/components/search-form";
@@ -16,7 +17,7 @@ export const dynamic = "force-dynamic";
 type MenuHit = { save_type: "plate" | "request"; save_id: string };
 
 export default async function MenuPage({ searchParams }: {
-  searchParams: Promise<{ q?: string | string[]; view?: string; notice?: string; undoKind?: string; undoId?: string; undoVersion?: string }>;
+  searchParams: Promise<{ q?: string | string[]; view?: string; page?: string | string[]; notice?: string; undoKind?: string; undoId?: string; undoVersion?: string }>;
 }) {
   const params = await searchParams;
   const raw = params.q;
@@ -24,6 +25,10 @@ export default async function MenuPage({ searchParams }: {
   const searching = query.length > 0;
   const valid = searching && query.length <= 100;
   const supabase = await signedInClient();
+  if (params.view === "plates") return <PageLayout title="Your Menu" description="Your saved favourites and the Plates you’ve shared.">
+    <MenuViews own />
+    <YourPlates client={supabase} page={params.page} />
+  </PageLayout>;
   const removalReady = await menuRemovalReady(supabase);
   const removedView = params.view === "removed";
   const undoVersion = Number(params.undoVersion);
@@ -104,11 +109,10 @@ export default async function MenuPage({ searchParams }: {
     sourcesBySave.set(source.save_id, list);
   }
   return (
-    <PageLayout title={removedView ? "Removed items" : "Your Menu"} description={removedView ? "Restore saved items whenever you want. Original access rules still apply." : "Your saved Plates and Table Requests, ready to revisit."}>
-      {removalReady && <ViewNavigation label="Menu views" items={[
-        { href: query ? `/menu?q=${encodeURIComponent(query)}` : "/menu", label: "Your Menu", active: !removedView },
-        { href: `/menu?view=removed${query ? `&q=${encodeURIComponent(query)}` : ""}`, label: "Removed items", active: removedView },
-      ]} />}
+    <PageLayout title={removedView ? "Removed items" : "Your Menu"} description={removedView ? "Restore saved items whenever you want. Original access rules still apply." : "Your saved favourites and the Plates you’ve shared."}>
+      <MenuViews query={query} />
+      {removalReady && <Link href={removedView ? query ? `/menu?q=${encodeURIComponent(query)}` : "/menu" : `/menu?view=removed${query ? `&q=${encodeURIComponent(query)}` : ""}`}
+        className="mt-3 inline-flex min-h-11 items-center text-sm text-link underline">{removedView ? "Back to Saved" : "Removed items"}</Link>}
       {removalReady && params.notice === "removed" && undoKind && undoId && Number.isSafeInteger(undoVersion) && undoVersion>0 &&
         <div role="status" className="mt-4 rounded-lg border bg-muted p-4"><p>Item removed from your Menu. You can also restore it from Removed items.</p>
           <MenuItemActions kind={undoKind} saveId={undoId} removed version={undoVersion} undo />

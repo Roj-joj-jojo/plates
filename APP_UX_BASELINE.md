@@ -39,6 +39,7 @@ Dinnerfolk is the app name. Plates remain posts; Tables, Menu and Requests retai
 
 ## Onboarding and product boundaries
 
+- Menu has **Saved** (default) and **Your Plates** as its main views. **Removed items** is a secondary link under Saved. Saved retains Plate snapshots and live Request references; Your Plates lists the signed-in person’s live published posts, with detail/edit access and paging. Posts are not automatically saved; profile Plate lists remain available. The introduction explains both Menu views.
 - Keep the concept-led Feed/Plates/Tables/Menu/People tour. First-step Back is hidden while its layout space remains. Account is under the avatar menu. Search is explained in People.
 - Explain immediate Table addition and earlier-history access honestly. Following and private-original readership are separate; adding someone to a Table does not grant access to a private Plate.
 - Bell: follows and original Plate comments. Envelope: Table activity, including mentions/replies. No Table mention double counting.

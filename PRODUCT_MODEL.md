@@ -2,6 +2,8 @@
 
 Working model · updated 2026-10-06
 
+2026-10-22 Menu navigation clarification: the owner approved Saved (default) and Your Plates as the main Menu views, with Removed items a secondary destination under Saved. Your Plates provides access to the signed-in person’s live published posts and existing detail/edit controls; it does not create saved copies. Saved Plate snapshots and saved Request references retain their existing semantics. Profile Plate lists remain available. Dinnerfolk is now the app’s public name; historical Plates branding in this document is retained.
+
 2026-10-14 decision clarification: owner approved open accounts by default and optional private accounts with approved followers. Following selects the Feed; private-account Plate viewing is also permission-gated across Search, direct links, Table previews and photos. Existing followers remain approved on making an account private; opening approves pending requests after confirmation. Existing Menu copies remain, while Table membership stays separate. This supersedes the older no-private-profile/follower-gate wording below. Local activation and candidate/installed rollback checks passed, alongside code checks; owner preview rebuild/browser review is pending. See SOCIAL_ALPHA_PLAN.md for the current scope and limits.
 
 This consolidates confirmed behaviour; it is not a declaration that the complete MVP is approved or implemented. Scope proposals live in [MVP_SCOPE.md](MVP_SCOPE.md), and proposed storage relationships in [DATA_MODEL.md](DATA_MODEL.md). The six journeys and their history remain in [USER_JOURNEYS.md](USER_JOURNEYS.md).

@@ -20,7 +20,7 @@ const steps = [
     note: "People you add join immediately and can read earlier conversation. Sharing a Plate doesn’t give Table members access to a private original. Save a question to Menu as a Request.",
     sampleTitle: "Friday dinner", sampleBody: "Any ideas for a place with good veggie options?", sampleMeta: "Your private Table · Question" },
   { label: "Menu", title: "Keep the good stuff close", icon: Bookmark,
-    body: "Save Plates and Requests to your Menu so you can find them later. Remove a save when you no longer need it, or restore it from Removed items.",
+    body: "Your Menu brings together Saved and Your Plates. Save Plates and Requests to revisit, or open Your Plates to find and edit your own posts. Removed items is under Saved.",
     note: "Saved Plates keep a copy, even if the original changes. Requests open the discussion in their Table. Original comments stay separate, and you still need access to open originals or Table discussions. Deleting an account can remove its saved content too.",
     sampleTitle: "A recipe for next weekend", sampleBody: "Saved to your Menu, ready when you are.", sampleMeta: "Your saved Plate" },
   { label: "People", title: "Good food starts with good company", icon: Users,
