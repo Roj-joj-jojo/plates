@@ -4,6 +4,20 @@ Updated 2026-10-18. Backlog and implementation status: user-requested ideas are 
 
 ## End-to-end QA review — 2026-10-17
 
+### Owner follow-up notes — 23 October 2026
+
+Captured for the next session; implementation and runtime investigation have not started.
+
+- **Worker hosting reconsideration:** owner no longer plans to use Railway after reported security concerns. Assess alternatives, including Cloudflare (owner’s candidate, already used for the domain), against the existing photo worker’s runtime/native-image requirements, secrets, limits, reliability and cost. No replacement selected or infrastructure change approved. Official incident evidence and distinction from unverified affected-user figures are recorded in ALPHA_HOSTING_RUNBOOK.md. Do not automatically resume older Railway setup steps.
+- **Account organisation:** review which controls belong under profile, account and privacy; the current grouping feels misplaced to the owner. Agree the grouping before restructuring.
+- **Privacy status wording:** the isolated “Open account” text on the profile remains after the Menu merge. Make its role as a privacy status clear and review its placement. This label was outside the prior Menu scope; no privacy/access-rule change is requested.
+- **Desktop sign-in:** owner reports the initial login page feels fixed to a narrow/mobile layout on a PC. Review desktop proportions while retaining usable mobile layout and accessible form widths.
+- **Removed items:** still too prominent in Menu. Owner suggests moving the secondary link right to the bottom of Saved; preserve existing search, restore and return behaviour.
+- **Typography:** review font-size consistency across equivalent headings, body text, labels and controls; agree a coherent scale and check mobile/desktop readability.
+- **Slow loading:** owner reports broadly slow page loads. Preview/branch deployment is a possible cause suggested by the owner, not an established diagnosis. Compare equivalent production and preview journeys and distinguish initial load from subsequent navigation before deciding on changes. Remote inspection or settings changes need separate authorisation.
+
+Owner reports testing and merging the Saved/Your Plates change on 22 October; detailed acceptance coverage and the final merge revision were not supplied. These notes request follow-up, not automatic runtime, Git, publishing or data operations.
+
 Visual follow-up latest (18 October): owner approved researched compact treatment. Content-level creation, below-search management link, compact filled navigation/three People views/Received-Sent, Plate heart-comment-bookmark and heading detail link implemented. Final lint/types/build/scoped browser passed; owner visual review next. QA_VISUAL_FOLLOWUP.md records scope/limits, including Feed phone not freshly exercised. Preview53804 running; no data/DB/Git/remote changes. Earlier Batch7 equal-width selected-underlined tabs superseded.
 
 Batch7 latest (18 October): shared stable/current navigation tabs, aligned headers/phone Table controls, avatar contrast, secondary Save/distinct liked styling, bounded menus/dialogs and opener focus return, picture chooser, singular announcement and stable introduction grid implemented. Final lint/types/build and scoped desktop360/390/keyboard/query/contrast/short-dialog browser checks passed. QA_BATCH_7.md records exact scope/limits. Preview2550 running; worker not operated. Next Batch8 integrated rehearsal and retained-fixture inventory; >50 context/posting/follow acceptance and earlier limits remain. No data cleanup/Git/DB/remote actions.
